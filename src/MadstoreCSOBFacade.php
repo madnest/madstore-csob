@@ -16,6 +16,6 @@ class MadstoreCSOBFacade extends Facade
      */
     protected static function getFacadeAccessor()
     {
-        return 'madstore-stripe';
+        return 'madstore-csob';
     }
 }

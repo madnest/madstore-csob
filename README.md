@@ -1,9 +1,9 @@
 # Madstore Stripe
 
-<!-- [![Latest Version on Packagist](https://img.shields.io/packagist/v/madnest/madstore-stripe.svg?style=flat-square)](https://packagist.org/packages/madnest/madstore-stripe)
-[![Build Status](https://img.shields.io/travis/madnest/madstore-stripe/master.svg?style=flat-square)](https://travis-ci.org/madnest/madstore-stripe)
-[![Quality Score](https://img.shields.io/scrutinizer/g/madnest/madstore-stripe.svg?style=flat-square)](https://scrutinizer-ci.com/g/madnest/madstore-stripe)
-[![Total Downloads](https://img.shields.io/packagist/dt/madnest/madstore-stripe.svg?style=flat-square)](https://packagist.org/packages/madnest/madstore-stripe) -->
+<!-- [![Latest Version on Packagist](https://img.shields.io/packagist/v/madnest/madstore-csob.svg?style=flat-square)](https://packagist.org/packages/madnest/madstore-csob)
+[![Build Status](https://img.shields.io/travis/madnest/madstore-csob/master.svg?style=flat-square)](https://travis-ci.org/madnest/madstore-csob)
+[![Quality Score](https://img.shields.io/scrutinizer/g/madnest/madstore-csob.svg?style=flat-square)](https://scrutinizer-ci.com/g/madnest/madstore-csob)
+[![Total Downloads](https://img.shields.io/packagist/dt/madnest/madstore-csob.svg?style=flat-square)](https://packagist.org/packages/madnest/madstore-csob) -->
 
 WIP
 
@@ -12,7 +12,7 @@ WIP
 You can install the package via composer:
 
 ```bash
-composer require madnest/madstore-stripe
+composer require madnest/madstore-csob
 ```
 
 ## Usage

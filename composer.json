@@ -22,7 +22,7 @@
         "php": ">=7.3.0",
         "illuminate/support": "^7.0|^8.0",
         "laravel/framework": "^7.0|^8.0",
-        "madnest/madstore-framework": "^1.0",
+        "madnest/madstore-framework": "^0.1.0",
         "ondrakoupil/csob-eapi-paygate": "^1.8"
     },
     "require-dev": {
@@ -57,12 +57,6 @@
             "aliases": {
                 "MadstoreCSOB": "Madnest\\MadstoreCSOB\\MadstoreCSOBFacade"
             }
-        }
-    },
-    "repositories": {
-        "local": {
-            "type": "path",
-            "url": "../madstore-framework"
         }
     }
 }

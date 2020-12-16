@@ -2,7 +2,6 @@
 
 namespace Madnest\MadstoreCSOB;
 
-use Cartalyst\Stripe\Stripe;
 use Illuminate\Support\Str;
 use InvalidArgumentException;
 use Madnest\Madstore\Payment\Contracts\HasPayerInfo;
@@ -14,14 +13,25 @@ use Madnest\Madstore\Payment\PaymentResponse;
 use Madnest\Madstore\Shipping\Contracts\ShippableItem;
 use Madnest\MadstoreCSOB\Items\PurchaseItem;
 use Madnest\MadstoreCSOB\Items\ShippingItem;
+use OndraKoupil\Csob\Client as CSOBClient;
+use OndraKoupil\Csob\Config;
 
 class MadstoreCSOB implements PaymentOption
 {
-    protected $stripe;
+    protected $csob;
 
     public function __construct()
     {
-        $this->stripe = new Stripe(env('STRIPE_API_KEY'));
+        $config = new Config(
+            config('madstore-csob.merchant_id'),
+            config('madstore-csob.private_key'),
+            config('madstore-csob.public_key'),
+            config('madstore-csob.shop_name'),
+            config('madstore-csob.return_url'),
+            config('madstore-csob.api_url'),
+        );
+
+        $this->csob = new CSOBClient($config);
     }
 
     /**
@@ -105,7 +115,7 @@ class MadstoreCSOB implements PaymentOption
             'description' => $model->getUUID(), // We use UUID to reffer back to given Order
             'metadata' => [],
             'receipt_email' => $model->getPayerInfo()->getEmail(),
-            // 'return_url' => config('madstore-stripe.return_url'),
+            // 'return_url' => config('madstore-csob.return_url'),
         ];
 
         return $params;
