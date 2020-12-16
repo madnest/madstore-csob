@@ -1,4 +1,4 @@
-# Madstore Stripe
+# Madstore ČSOB
 
 <!-- [![Latest Version on Packagist](https://img.shields.io/packagist/v/madnest/madstore-csob.svg?style=flat-square)](https://packagist.org/packages/madnest/madstore-csob)
 [![Build Status](https://img.shields.io/travis/madnest/madstore-csob/master.svg?style=flat-square)](https://travis-ci.org/madnest/madstore-csob)

@@ -1,5 +1,6 @@
 <?php
 
+use Madnest\Madstore\Payment\Enums\PaymentStatus;
 use OndraKoupil\Csob\GatewayUrl;
 
 return [
@@ -15,5 +16,18 @@ return [
     'return_url' => env('CSOB_RETURN_URL'),
 
     'api_url' => env('CSOB_API_URL', GatewayUrl::TEST_LATEST),
+
+    'payment_statuses' => [
+        '1' => PaymentStatus::CREATED,
+        '2' => PaymentStatus::CREATED,
+        '3' => PaymentStatus::CANCELED,
+        '4' => PaymentStatus::AUTHORIZED,
+        '5' => PaymentStatus::CANCELED,
+        '6' => PaymentStatus::CANCELED,
+        '7' => PaymentStatus::PAID,
+        '8' => PaymentStatus::PAID,
+        '9' => PaymentStatus::REFUNDED,
+        '10' => PaymentStatus::REFUNDED,
+    ],
 
 ];

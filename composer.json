@@ -22,7 +22,7 @@
         "php": ">=7.4.0",
         "illuminate/support": "^7.0|^8.0",
         "laravel/framework": "^7.0|^8.0",
-        "madnest/madstore-framework": "^0.1.0",
+        "madnest/madstore-framework": "dev-master",
         "ondrakoupil/csob-eapi-paygate": "^1.8"
     },
     "require-dev": {

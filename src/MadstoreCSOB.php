@@ -15,6 +15,7 @@ use Madnest\MadstoreCSOB\Items\PurchaseItem;
 use Madnest\MadstoreCSOB\Items\ShippingItem;
 use OndraKoupil\Csob\Client as CSOBClient;
 use OndraKoupil\Csob\Config;
+use OndraKoupil\Csob\Payment;
 
 class MadstoreCSOB implements PaymentOption
 {
@@ -44,19 +45,27 @@ class MadstoreCSOB implements PaymentOption
      */
     public function createPayment(Purchasable $purchasable, array $params = [], array $options = []): PaymentResponse
     {
-        $response = $this->stripe->paymentIntents()->create($this->mapParams($purchasable, $params, $options));
+        $payment = new Payment($purchasable->id);
+        $payment->currency = $purchasable->getCurrency();
+
+        $payment->addCartItem("Objednávka {$purchasable->getUUID()}", 1, $purchasable->getFinalAmount());
+
+        $response = $this->csob->paymentInit($payment);
 
         return new PaymentResponse([
             'statusCode' => 200,
-            'status' => PaymentStatus::CREATED,
-            'paymentId' => $response['id'],
-            'orderNumber' => $response['description'],
-            'amount' => $response['amount'],
-            'currency' => strtoupper($response['currency']),
-            'paymentMethod' => $response['payment_method'] ?? '',
-            'gateway' => 'stripe',
-            'clientSecret' => $response['client_secret'],
-            'redirect' => false,
+            'status' => config(
+                "madstore-csob.payment_statuses.{$response['paymentStatus']}",
+                PaymentStatus::ERROR
+            ),
+            'paymentId' => $response['payId'],
+            'orderNumber' => $purchasable->getUUID(),
+            'amount' => $payment->getTotalAmount(),
+            'currency' => $purchasable->getCurrency(),
+            'paymentMethod' => $response['payment_method'] ?? 'card',
+            'gateway' => 'csob',
+            'redirect' => true,
+            'redirect_url' => $this->csob->getPaymentProcessUrl($payment),
         ]);
     }
 
@@ -68,33 +77,20 @@ class MadstoreCSOB implements PaymentOption
      */
     public function getStatus($id): PaymentResponse
     {
-        $response = $this->stripe->events()->find($id);
-
-        $eventType = $response['type'];
-
-        $objectType = $response['data']['object']['object'];
-        $objectId = $response['data']['object']['id'];
-
-        switch ($objectType) {
-            case 'charge':
-                $response = $this->stripe->charges()->find($objectId);
-                break;
-            case 'payment_intent':
-                $response = $this->stripe->paymentIntents()->find($objectId);
-                break;
-            default:
-                throw new InvalidArgumentException('Cannot handle this type of object.');
-        }
+        $response = $this->csob->paymentStatus($id, false);
 
         return new PaymentResponse([
             'statusCode' => 200,
-            'status' => $this->translateEventToPaymentStatus($eventType),
-            'paymentId' => $response['id'],
-            'orderNumber' => $response['description'],
-            'amount' => $response['amount'],
-            'currency' => strtoupper($response['currency']),
-            'paymentMethod' => $response['payment_method'] ?? '',
-            'gateway' => 'stripe',
+            'status' => config(
+                "madstore-csob.payment_statuses.{$response['paymentStatus']}",
+                PaymentStatus::ERROR
+            ),
+            'paymentId' => $response['payId'],
+            'orderNumber' => '',
+            'amount' => 0,
+            'currency' => '',
+            'paymentMethod' => '',
+            'gateway' => 'csob',
             'redirect' => false,
         ]);
     }
@@ -203,19 +199,5 @@ class MadstoreCSOB implements PaymentOption
                 'country_code' => $model->getCountryIso3Code(),
             ],
         ];
-    }
-
-    protected function translateEventToPaymentStatus(string $eventType): string
-    {
-        $translations = [
-            'payment_intent.succeeded' => PaymentStatus::PAID,
-            'charge.succeeded' => PaymentStatus::PAID,
-        ];
-
-        if (! array_key_exists($eventType, $translations)) {
-            return 'undefined';
-        }
-
-        return $translations[$eventType];
     }
 }
