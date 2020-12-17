@@ -47,6 +47,7 @@ class MadstoreCSOB implements PaymentOption
     {
         $payment = new Payment($purchasable->id);
         $payment->currency = $purchasable->getCurrency();
+        $payment->returnUrl = config('madstore-csob.return_url')."?id={$purchasable->getUUID()}";
 
         $payment->addCartItem("Objednávka {$purchasable->getUUID()}", 1, $purchasable->getFinalAmount());
 
