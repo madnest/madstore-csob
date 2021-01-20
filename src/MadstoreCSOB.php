@@ -3,7 +3,6 @@
 namespace Madnest\MadstoreCSOB;
 
 use Illuminate\Support\Str;
-use InvalidArgumentException;
 use Madnest\Madstore\Payment\Contracts\HasPayerInfo;
 use Madnest\Madstore\Payment\Contracts\PaymentOption;
 use Madnest\Madstore\Payment\Contracts\Purchasable;
