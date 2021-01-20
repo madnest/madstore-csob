@@ -23,7 +23,7 @@ return [
         '3' => PaymentStatus::CANCELED,
         '4' => PaymentStatus::AUTHORIZED,
         '5' => PaymentStatus::CANCELED,
-        '6' => PaymentStatus::CANCELED,
+        '6' => PaymentStatus::TIMEOUTED,
         '7' => PaymentStatus::PAID,
         '8' => PaymentStatus::PAID,
         '9' => PaymentStatus::REFUNDED,
