@@ -70,6 +70,44 @@ class MadstoreCSOB implements PaymentOption
     }
 
     /**
+     * Closes payment.
+     *
+     * @param mixed $id
+     * @return array|null
+     */
+    public function closePayment($id): ?array
+    {
+        return $this->csob->paymentClose($id);
+    }
+
+    /**
+     * Reverse payment.
+     *
+     * @param mixed $id
+     * @return PaymentResponse
+     */
+    public function reversePayment($id): PaymentResponse
+    {
+        $this->csob->paymentReverse($id);
+
+        return $this->getStatus($id);
+    }
+
+    /**
+     * Refund payment.
+     *
+     * @param mixed $id
+     * @param integer|null $amount in cents
+     * @return PaymentResponse
+     */
+    public function refundPayment($id, ?int $amount = null): PaymentResponse
+    {
+        $this->csob->paymentRefund($id, false, $amount);
+
+        return $this->getStatus($id);
+    }
+
+    /**
      * Get status of payment.
      *
      * @param mixed $id
@@ -78,6 +116,8 @@ class MadstoreCSOB implements PaymentOption
     public function getStatus($id): PaymentResponse
     {
         $response = $this->csob->paymentStatus($id, false);
+
+        ray($response['paymentStatus'])->orange();
 
         return new PaymentResponse([
             'statusCode' => 200,
