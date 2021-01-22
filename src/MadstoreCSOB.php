@@ -97,7 +97,7 @@ class MadstoreCSOB implements PaymentOption
      * Refund payment.
      *
      * @param mixed $id
-     * @param integer|null $amount in cents
+     * @param int|null $amount in cents
      * @return PaymentResponse
      */
     public function refundPayment($id, ?int $amount = null): PaymentResponse
@@ -116,8 +116,6 @@ class MadstoreCSOB implements PaymentOption
     public function getStatus($id): PaymentResponse
     {
         $response = $this->csob->paymentStatus($id, false);
-
-        ray($response['paymentStatus'])->orange();
 
         return new PaymentResponse([
             'statusCode' => 200,
